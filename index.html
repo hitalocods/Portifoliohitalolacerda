@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Hitalo Lacerda — Desenvolvedor Full Stack</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&display=swap">
+    <style>
+        :root {
+            --bg: #eef1f7;
+            --ink: #101426;
+            --mut: #5b6178;
+            --glass: rgba(255, 255, 255, .6);
+            --line: rgba(16, 20, 38, .08);
+            --h: 230;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #13162b;
+                --ink: #eef1f7;
+                --mut: #a3a9c2;
+                --glass: rgba(34, 38, 68, .6);
+                --line: rgba(255, 255, 255, .1)
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #13162b;
+            --ink: #eef1f7;
+            --mut: #a3a9c2;
+            --glass: rgba(34, 38, 68, .6);
+            --line: rgba(255, 255, 255, .1)
+        }
+
+        html {
+            height: 100%;
+            scroll-padding-top: env(safe-area-inset-top, 0px)
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            min-height: 100%;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 1.05rem/1.6 Figtree, system-ui, sans-serif;
+            overflow-x: hidden
+        }
+
+        .bar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 4px;
+            width: 0;
+            background: hsl(var(--h) 85% 55%);
+            z-index: 50;
+            border-radius: 0 4px 4px 0
+        }
+
+        .orb {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 120px;
+            height: 120px;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 999px;
+            will-change: transform;
+            background: radial-gradient(circle at 32% 26%, #fff 0 5%, hsl(var(--h) 95% 78%) 6%, hsl(var(--h) 85% 56%) 56%, hsl(calc(var(--h) + 45) 80% 38%) 100%);
+            box-shadow: inset -12px -16px 32px hsl(calc(var(--h) + 45) 80% 30%/.45), 0 40px 70px -14px hsl(var(--h) 85% 50%/.5)
+        }
+
+        main {
+            position: relative;
+            z-index: 1
+        }
+
+        .hero {
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem 6vw 4rem
+        }
+
+        .me {
+            width: 84px;
+            height: 84px;
+            border-radius: 999px;
+            background: var(--glass);
+            border: 1px solid var(--line);
+            display: grid;
+            place-items: center;
+            font: 800 1.5rem "Bricolage Grotesque", sans-serif;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(12px)
+        }
+
+        h1 {
+            font: 800 clamp(3.4rem, 11vw, 9.5rem)/.92 "Bricolage Grotesque", sans-serif;
+            letter-spacing: -.04em;
+            margin: 0;
+            max-width: 11ch
+        }
+
+        h1 span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(60%) rotate(4deg);
+            animation: up .9s cubic-bezier(.2, .8, .2, 1) forwards
+        }
+
+        @keyframes up {
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .lead {
+            max-width: 36rem;
+            color: var(--mut);
+            margin: 2rem 0 0;
+            font-size: 1.2rem
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem;
+            margin-top: 1.4rem
+        }
+
+        .meta span {
+            padding: .45rem 1rem;
+            border-radius: 999px;
+            background: var(--glass);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(12px);
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--ink)
+        }
+
+        .cta {
+            display: flex;
+            gap: .8rem;
+            flex-wrap: wrap;
+            margin-top: 2rem
+        }
+
+        .btn {
+            display: inline-block;
+            padding: .95rem 1.6rem;
+            border-radius: 999px;
+            background: var(--ink);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform .25s
+        }
+
+        .btn.alt {
+            background: var(--glass);
+            color: var(--ink);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(12px)
+        }
+
+        .marq {
+            overflow: hidden;
+            white-space: nowrap;
+            border-block: 1px solid var(--line);
+            padding: 1.1rem 0;
+            background: var(--glass);
+            backdrop-filter: blur(12px)
+        }
+
+        .marq div {
+            display: inline-block;
+            animation: m 28s linear infinite;
+            font: 800 1.6rem "Bricolage Grotesque", sans-serif;
+            letter-spacing: -.02em
+        }
+
+        .marq b {
+            margin: 0 1.4rem;
+            color: hsl(var(--h) 85% 55%)
+        }
+
+        @keyframes m {
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        h2 {
+            font: 800 clamp(2.2rem, 5vw, 3.6rem)/1 "Bricolage Grotesque", sans-serif;
+            letter-spacing: -.03em;
+            margin: 0
+        }
+
+        .intro {
+            padding: 7rem 6vw 3rem
+        }
+
+        .intro p {
+            color: var(--mut);
+            max-width: 32rem;
+            margin: 1rem 0 0
+        }
+
+        .proj {
+            width: min(820px, 66vw);
+            margin: 0 0 22vh;
+            padding: clamp(1.2rem, 2.5vw, 2rem);
+            border-radius: 36px;
+            background: var(--glass);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            display: grid;
+            gap: 1.4rem;
+            opacity: 0;
+            transform: translateY(70px) scale(.95);
+            transition: opacity .8s, transform .9s cubic-bezier(.2, .8, .2, 1);
+            --c: calc(var(--ph))
+        }
+
+        .proj[data-side="l"] {
+            margin-left: 6vw;
+            margin-right: auto
+        }
+
+        .proj[data-side="r"] {
+            margin-right: 6vw;
+            margin-left: auto
+        }
+
+        .proj.in {
+            opacity: 1;
+            transform: none
+        }
+
+        .proj h3 {
+            font: 800 clamp(1.8rem, 3.4vw, 2.6rem)/1 "Bricolage Grotesque", sans-serif;
+            letter-spacing: -.03em;
+            margin: 0
+        }
+
+        .proj h3 a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .proj h3 a:hover {
+            text-decoration: underline
+        }
+
+        .proj p {
+            margin: .5rem 0 0;
+            color: var(--mut)
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin-top: 1rem
+        }
+
+        .chips span {
+            padding: .3rem .8rem;
+            border-radius: 999px;
+            font-size: .85rem;
+            font-weight: 600;
+            background: hsl(var(--ph) 85% 92%);
+            color: hsl(var(--ph) 60% 28%)
+        }
+
+        .p-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            margin-top: 1.1rem;
+            font-size: .92rem;
+            font-weight: 600;
+            color: hsl(var(--ph) 75% 42%);
+            text-decoration: none
+        }
+
+        :root[data-theme="dark"] .p-link {
+            color: hsl(var(--ph) 90% 72%)
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) .p-link {
+                color: hsl(var(--ph) 90% 72%)
+            }
+        }
+
+        .p-link:hover {
+            text-decoration: underline
+        }
+
+        .mock {
+            display: block;
+            text-decoration: none;
+            border-radius: 26px;
+            background: #fff;
+            padding: 12px;
+            color: #101426;
+            box-shadow: 0 30px 50px -28px hsl(var(--ph) 80% 45%/.6);
+            transition: transform .2s
+        }
+
+        .dots {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            padding: 0 4px
+        }
+
+        .dots i {
+            width: 10px;
+            height: 10px;
+            border-radius: 99px;
+            background: hsl(var(--ph) 70% 85%)
+        }
+
+        .dots small {
+            margin-left: auto;
+            font-size: .72rem;
+            color: #6b7280;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 190px
+        }
+
+        .shot {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(110deg, hsl(var(--ph) 70% 94%) 8%, hsl(var(--ph) 80% 98%) 18%, hsl(var(--ph) 70% 94%) 33%);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s linear infinite;
+            border: 1px solid rgba(16, 20, 38, .08)
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position-x: -200%
+            }
+        }
+
+        .shot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            transition: transform .45s cubic-bezier(.2, .8, .2, 1)
+        }
+
+        .mock:hover .shot img {
+            transform: scale(1.04)
+        }
+
+        .row {
+            padding: .65rem 1rem;
+            border-radius: 14px;
+            background: hsl(var(--ph) 90% 96%);
+            margin-top: 10px;
+            font-size: .88rem
+        }
+
+        .row.go {
+            background: hsl(var(--ph) 82% 52%);
+            color: #fff;
+            font-weight: 600;
+            text-align: center
+        }
+
+        .contact {
+            padding: 10vh 6vw 12vh;
+            text-align: center
+        }
+
+        .contact h2 {
+            font-size: clamp(2.6rem, 8vw, 6.5rem);
+            max-width: 12ch;
+            margin: 0 auto
+        }
+
+        .contact .cta {
+            justify-content: center
+        }
+
+        .contact small {
+            display: block;
+            margin-top: 3rem;
+            color: var(--mut)
+        }
+
+        @media(min-width:900px) {
+            .proj {
+                grid-template-columns: 1fr 1.15fr;
+                align-items: center
+            }
+        }
+
+        @media(max-width:700px) {
+            .orb {
+                width: 70px;
+                height: 70px
+            }
+
+            .proj {
+                width: auto;
+                margin-left: 5vw !important;
+                margin-right: 5vw !important;
+                margin-bottom: 16vh
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            h1 span {
+                animation: none;
+                opacity: 1;
+                transform: none
+            }
+
+            .marq div {
+                animation: none
+            }
+
+            .proj {
+                opacity: 1;
+                transform: none;
+                transition: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bar"></div>
+    <div class="orb" aria-hidden="true"></div>
+    <main>
+        <section class="hero">
+            <div class="me" title="Troque pela sua foto">HL</div>
+            <h1 id="h1">Hitalo Lacerda</h1>
+            <p class="lead">Desenvolvedor Full Stack em Teresina com 2 anos de experiência na área. Construo sistemas de
+                agendamento, lojas virtuais e plataformas com CRUD completo que negócios reais usam todo dia.</p>
+            <div class="meta">
+                <span>🎓 Engenharia de Software · 5º período (Facid Wyden)</span>
+                <span>💼 +2 anos de experiência</span>
+                <span>📍 Teresina - PI</span>
+            </div>
+            <div class="cta">
+                <a class="btn" href="https://wa.me/5586999540408" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</a>
+                <a class="btn alt" href="https://github.com/hitalocods" target="_blank" rel="noopener noreferrer">GitHub, +120 repositórios</a>
+            </div>
+        </section>
+        <div class="marq">
+            <div id="mq"></div>
+        </div>
+        <section class="intro">
+            <h2>Projetos em produção</h2>
+            <p>Sistemas reais com gerenciamento completo (CRUD) no ar. Clique em qualquer card para acessar o projeto ao vivo.</p>
+        </section>
+        <section id="list"></section>
+        <section class="contact">
+            <h2>Vamos tirar seu projeto do papel?</h2>
+            <div class="cta">
+                <a class="btn" id="mag" href="https://wa.me/5586999540408" target="_blank" rel="noopener noreferrer">Falar no WhatsApp</a>
+                <a class="btn alt" href="mailto:hitalolacerdag@gmail.com">hitalolacerdag@gmail.com</a>
+            </div>
+            <small>Hitalo Lacerda Gomes · Engenharia de Software (Facid Wyden) · Atlas Software · Teresina-PI</small>
+        </section>
+    </main>
+    <script>
+        const P = [
+            {
+                n: 'Grupo Chapas',
+                u: 'https://www.grupochapas.com.br/',
+                host: 'grupochapas.com.br',
+                d: 'Página de links corporativa com painel administrativo e CRUD completo para gerenciar links, destaques e canais de atendimento.',
+                t: ['Full Stack', 'CRUD Completo', 'Painel Admin', 'Em Produção'],
+                h: 215,
+                cta: 'Acessar grupochapas.com.br ↗'
+            },
+            {
+                n: 'Mandalla Prime',
+                u: 'https://www.mandallaprime.com.br',
+                host: 'mandallaprime.com.br',
+                d: 'Loja virtual em produção com catálogo dinâmico, carrinho, escolha de retirada ou entrega e painel administrativo com CRUD completo de produtos.',
+                t: ['Next.js', 'TypeScript', 'CRUD Produtos', 'E-commerce'],
+                h: 335,
+                cta: 'Acessar mandallaprime.com.br ↗'
+            },
+            {
+                n: 'Arena Chapas',
+                u: 'https://arena-chapas.vercel.app',
+                host: 'arena-chapas.vercel.app',
+                d: 'Sistema de agendamento para arena de vôlei e esportes de areia, com escolha de quadra, data, horário e painel admin com CRUD completo.',
+                t: ['React', 'CRUD Agendamentos', 'Painel Admin', 'WhatsApp'],
+                h: 45,
+                cta: 'Acessar Arena Chapas ↗'
+            },
+            {
+                n: 'Apolo Barbearia',
+                u: 'https://apolo-barbearia-a9kx.vercel.app/',
+                host: 'apolo-barbearia.vercel.app',
+                d: 'Sistema completo de agendamento para barbearia com gestão de horários, serviços, profissionais e painel administrativo com CRUD.',
+                t: ['Agendamento', 'CRUD Completo', 'Painel Admin', 'Vercel'],
+                h: 30,
+                cta: 'Acessar Apolo Barbearia ↗'
+            },
+            {
+                n: 'Dr. Alex Rocha',
+                u: 'https://dr-alexrocha.vercel.app/',
+                host: 'dr-alexrocha.vercel.app',
+                d: 'Sistema de agendamento voltado para a área da saúde, com marcação de consultas, gestão de horários de atendimento e painel CRUD.',
+                t: ['Área da Saúde', 'Agendamento', 'CRUD Consultas', 'Em Produção'],
+                h: 175,
+                cta: 'Acessar Dr. Alex Rocha ↗'
+            }
+        ];
+        const shotUrl = u => `https://api.microlink.io/?url=${encodeURIComponent(u)}&screenshot=true&meta=false&embed=screenshot.url`;
+        const fallbackUrl = u => `https://s0.wp.com/mshots/v1/${encodeURIComponent(u)}?w=800`;
+        const list = document.getElementById('list');
+        list.innerHTML = P.map((p, i) => `<article class="proj" data-side="${i % 2 ? 'r' : 'l'}" data-h="${p.h}" data-s="${i % 2 ? 1 : 1.5}" style="--ph:${p.h}"><div><h3><a href="${p.u}" target="_blank" rel="noopener noreferrer">${p.n}</a></h3><p>${p.d}</p><div class="chips">${p.t.map(x => `<span>${x}</span>`).join('')}</div><a class="p-link" href="${p.u}" target="_blank" rel="noopener noreferrer">Ver sistema em produção ↗</a></div><a class="mock" href="${p.u}" target="_blank" rel="noopener noreferrer"><div class="dots"><i></i><i></i><i></i><small>${p.host}</small></div><div class="shot"><img src="${shotUrl(p.u)}" alt="Preview do sistema ${p.n}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackUrl(p.u)}'"></div><div class="row go">${p.cta}</div></a></article>`).join('');
+        const stack = ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'CRUD Completo', 'Firebase', 'Supabase', 'Neon', 'Vercel', 'APIs REST'];
+        const mq = document.getElementById('mq'); const mt = stack.map(s => `${s}<b>●</b>`).join(''); mq.innerHTML = mt + mt;
+        const h1 = document.getElementById('h1'); h1.innerHTML = h1.textContent.split(' ').map((w, i) => `<span style="animation-delay:${.15 + i * .14}s">${w}</span>`).join(' ');
+        const io = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('in')), { threshold: .18 });
+        document.querySelectorAll('.proj').forEach(el => {
+            io.observe(el); const m = el.querySelector('.mock');
+            el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; m.style.transform = `perspective(700px) rotateY(${x * 14}deg) rotateX(${-y * 14}deg) translateZ(14px)` });
+            el.addEventListener('pointerleave', () => m.style.transform = '')
+        });
+        const mag = document.getElementById('mag');
+        mag.addEventListener('pointermove', e => { const r = mag.getBoundingClientRect(); mag.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .25}px,${(e.clientY - r.top - r.height / 2) * .35}px)` });
+        mag.addEventListener('pointerleave', () => mag.style.transform = '');
+        const orb = document.querySelector('.orb'), bar = document.querySelector('.bar');
+        let A = [], X = .75, H = 230, S = 1, last = scrollY, vel = 0;
+        function anchors() { const m = innerWidth < 700; A = [{ y: 0, x: m ? .8 : .76, h: 230, s: 1 }, ...[...document.querySelectorAll('.proj')].map(e => { const r = e.getBoundingClientRect(); return { y: r.top + scrollY + r.height / 2, x: m ? (e.dataset.side == 'l' ? .9 : .1) : (e.dataset.side == 'l' ? .84 : .16), h: +e.dataset.h, s: +e.dataset.s } }), { y: document.documentElement.scrollHeight, x: .5, h: 260, s: 1 }] }
+        addEventListener('resize', anchors); addEventListener('load', anchors); anchors();
+        const still = matchMedia('(prefers-reduced-motion:reduce)').matches;
+        function tick(t) {
+            const y = scrollY + innerHeight * .5; let i = 0; while (i < A.length - 2 && y > A[i + 1].y) i++; const a = A[i], b = A[i + 1]; let k = Math.min(1, Math.max(0, (y - a.y) / (b.y - a.y))); k = k * k * (3 - 2 * k);
+            const k2 = still ? 1 : .08; X += (a.x + (b.x - a.x) * k - X) * k2; H += (a.h + (b.h - a.h) * k - H) * k2; S += (a.s + (b.s - a.s) * k - S) * k2;
+            vel += ((scrollY - last) - vel) * .15; last = scrollY; const sz = innerWidth < 700 ? 70 : 120, sq = still ? 0 : Math.min(.28, Math.abs(vel) / 70), bob = still ? 0 : Math.sin(t / 700) * 10;
+            orb.style.transform = `translate3d(${X * innerWidth - sz / 2}px,${innerHeight * .5 - sz / 2 + bob}px,0) rotate(${still ? 0 : scrollY * .12}deg) scale(${S * (1 - sq)},${1 + sq})`;
+            document.documentElement.style.setProperty('--h', H.toFixed(1));
+            bar.style.width = (scrollY / (document.documentElement.scrollHeight - innerHeight) * 100) + '%'; requestAnimationFrame(tick)
+        }
+        requestAnimationFrame(tick);
+    </script>
+</body>
+
+</html>
